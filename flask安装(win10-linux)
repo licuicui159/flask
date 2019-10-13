@@ -1,0 +1,104 @@
+win10下flask安装
+
+准备1：环境变量设置： 系统变量 path
+C:\Users\yy\AppData\Local\Programs\Python\Python37\
+C:\Users\yy\AppData\Local\Programs\Python\Python37\Scripts\
+
+准备2
+C:\Users\yy\pip目录下新建文件夹
+pip.ini
+[global]
+index-url=http://pypi.douban.com/simple
+trusted-host=pypi.douban.com
+
+cmd执行命令
+C:\WINDOWS\system32>I:
+C:\WINDOWS\system32>cd I:\pip-19.2.3
+C:\WINDOWS\system32>python setup.py install
+I:\>pip
+I:\>pip install flask
+
+-------------------------------------------------
+
+Linux安装flask
+
+flask11.py测试文件内容
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello_world():
+    return "Hello World!"
+
+@app.route("/")
+def index():
+    return 'Index page'
+
+@app.route("/api/hello")
+def hello():
+    return 'hello world'
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
+
+终端执行命令
+sudo apt-get install python-pip
+pip install flask
+python3 flask11.py
+ipconfig
+
+防火墙访问限制取消/禁止
+service firewalld stop/disable
+
+地址已存在解决方案
+tarena@tedu:~$ netstat -apn|grep 5000
+tcp        0      0 127.0.0.1:5000          0.0.0.0:*               LISTEN      10764/python3.6     
+tarena@tedu:~$ kill -9 10764                --（LISTEN 10764/python3.6 ）
+
+	
+http://127.0.0.1:5000/api/hello
+
+flask文档
+http://docs.jinkan.org/docs/flask/quickstart.html#a-minimal-application
+
+------------------------------------------------------------------------------
+
+win10下flask安装数据库
+
+以管理员身份运行pycham及cmd
+cmd执行命令
+pip install flask_sqlalchemy
+pip install mysqlclient
+
+linux下flask数据库操作
+
+终端执行命令
+mysql> cat /var/log/mysqld.log |grep 'password'
+mysql> SET PASSWORD=PASSWORD('123456');   --修改密码
+mysql> set global validate_password_policy=0;
+mysql> set global validate_password_length=1;
+mysql> SET PASSWORD=PASSWORD('123456');
+mysql> ALTER USER 'root'@'localhost' PASSWORD EXPIRE NEVER;
+mysql> flush privileges;
+
+tarena@tedu:~$ pip install flask-sqlalchemy
+tarena@tedu:~$ pip --default-timeout=100 install -U pip --延时处理
+tarena@tedu:~$ yum -y install mysql-devel gcc gcc-devel python-devel
+tarena@tedu:~$ pip install mysqlclient
+
+
+
+
+
+
+
+
+
+github
+账号：licuicui159@126.com
+密码:weidongdong1212
+
+126邮箱
+账号：licuicui159@126.com
+密码：765512581
