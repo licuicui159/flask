@@ -18,6 +18,10 @@ C:\WINDOWS\system32>python setup.py install
 I:\>pip
 I:\>pip install flask
 
+
+查看目录文件夹
+I:\whattoeat\WhatToEat>dir
+
 -------------------------------------------------
 
 Linux安装flask
