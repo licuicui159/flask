@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <!-- 过滤器 -->
+    <h1>capitalize:{{params.uname|capitalize}}</h1>
+    <h1>upper:{{params.uname|upper}}</h1>
+    <h1>title:{{params.uname|title}}</h1>
+    <!--
+        {{params.uname}} : 变量不存在，但不会报错
+        {{params.uname.len}} :
+            当变量不存在时还试图去找对应的属性的话，则报错
+    -->
+    <h1>用户名：{{params.uname}}</h1>
+    <h1>bookName : {{params.bookName}} </h1>
+    <h1>bookName : {{params['bookName']}}</h1>
+    <h1>author:{{params.author}}</h1>
+    <h1>price:{{params.price}}</h1>
+    <!-- 获取列表中的第一个元素 -->
+    <h1>list[0]:{{params.list[0]}}</h1>
+    <h1>list.0:{{params.list.0}}</h1>
+    <!-- 获取元组中的第二个元素 -->
+    <h1>tup[1] : {{params.tup[1]}}</h1>
+    <h1>tup.1 : {{params.tup.1}}</h1>
+    <!-- 获取字典中键为LZ的值-->
+    <h1>dic['LZ'] : {{params.dic['LZ']}}</h1>
+    <h1>dic.LZ : {{params.dic.LZ}}</h1>
+    <!-- 获取 person 对象的 name 属性值 -->
+    <h1>person.name : {{params.person.name}}</h1>
+    <!-- 获取 person 对象的 say()  -->
+    <h1>person.say() : {{params.person.say()}}</h1>
+</body>
+</html>

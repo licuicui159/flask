@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 将05-head.html包含进当前的模板文件中 -->
+    {% include '05-head.html' %}
+
+    <!--　引入macro.html 并使用声明好的　宏 -->
+    {% import 'macro.html' as macros %}
+    <ul>
+        {% for str in params.list %}
+            {{macros.show_li(str)}}
+        {% endfor %}
+    </ul>
+
+
+    <!-- 声明一个宏 : 接收一个字符串参数，将该参数放在<p>打印输出 -->
+    {% macro showP(str) %}
+        <p style="background:orange;">{{str}}</p>
+    {% endmacro %}
+    <!-- 调用宏，循环遍历params.list,将遍历出来的每个数据都放在showP()中运行 -->
+    <h1>使用宏显示数据</h1>
+    {% for name in params.list %}
+        {{showP(name)}}
+    {% endfor %}
+
+
+    <!-- 循环遍历 params.list -->
+    {% for name in params.list %}
+        <!--<h1>{{name}}</h1>-->
+        <!--
+            第一项：背景颜色设置为红色
+            最后一项：背景颜色设置为黄色
+            否则：背景颜色设置为　粉色
+         -->
+        <!--{% if loop.first %}-->
+            <!--<h1 style="background:red;">{{name}}</h1>-->
+        <!--{% elif loop.last %}-->
+            <!--<h1 style="background:yellow;">{{name}}</h1>-->
+        <!--{% else %}-->
+            <!--<h1 style="background:deeppink;">{{name}}</h1>-->
+        <!--{% endif %}-->
+
+        <h1 style="background:
+            {% if loop.first %}
+                red
+            {% elif loop.last %}
+                yellow
+            {% else %}
+                deeppink
+            {% endif %}
+        ;">{{name}}</h1>
+
+    {% endfor %}
+    <!--
+        循环遍历　params.dic
+        输出所有的内容：　KEY:VALUE
+     -->
+    <h1>遍历所有的key</h1>
+    {% for key in params.dic.keys() %}
+        <h2>{{key}}</h2>
+    {% endfor %}
+    <h1>遍历所有的value</h1>
+    {% for value in params.dic.values() %}
+        <h2>{{value}}</h2>
+    {% endfor %}
+    <h1>遍历所有的key和value</h1>
+    {% for key,value in params.dic.items() %}
+        <h2>{{key}}:{{value}}</h2>
+    {% endfor %}
+</body>
+</html>

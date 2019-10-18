@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if uname %}
+        <h1>欢迎:{{uname}}</h1>
+    {% else %}
+        <h1>
+            <a href="{{url_for('login')}}">登录</a>
+        </h1>
+    {% endif %}
+</body>
+</html>

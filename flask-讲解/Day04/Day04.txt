@@ -1,0 +1,195 @@
+1.模板继承
+	1.父模板
+		{% block 块名 %}
+		{% endblock %}
+	2.子模板
+		1.{% extends '父模板名称' %}
+		2.{% block 块名 %} ... {% endblock %}
+2.修改配置
+	1.创建应用的配置
+		app=Flask(
+			__name__,
+			template_folder="xxx",
+			static_url_path="/s",
+			static_folder="xxx")
+	2.启动应用时的配置
+		app.run(
+			debug=True,
+			port="5678",
+			host="0.0.0.0"
+		)
+3.请求
+	1.请求对象 - request
+		1.request
+			from flask import request
+
+			@app.route('/xxx')
+			def xxx():
+				request : 可以表示请求的相关信息
+		2.request的常用成员
+			1.request.scheme
+			2.request.method
+			3.request.args
+			4.request.form
+			5.request.cookies
+			6.request.url(完整路径)
+			7.request.path(不带参数)
+			8.request.full_path(带参数)
+			9.request.headers
+				request.headers.get('Referer','')
+				request.headers.get('消息头','')
+		3.获取请求提交的数据
+			1.GET 请求
+				1.表单 method=get
+				2.所有地址栏的请求都是get
+
+				特点：http://localhost:5000/login?uname=xx&uage=5
+
+				取值：
+					request.args['uname']
+					request.args.get('uage')
+			2.POST 请求
+				1. 表单 method='post'
+
+				取值：
+					request.form['']
+					request.form.get('')
+
+
+			想看登录页面: /login
+			在/login中，想提交数据给服务器:/login
+
+			在 /login 中，要判断用户的请求方法
+				如果是 get 的话，则去往 登录页面
+				如果是 post的话，则处理用户提交的数据
+				
+======================================================
+1.响应(response)
+	1.什么是响应
+		响应就是由服务器端带给客户端的内容，对应着请求。
+		响应可以是普通的字符串，模板 或 重定向
+			return "普通字符串"
+			return render_template('xxx.html')
+	2.响应对象
+		响应对象：将响应的内容封装到一个对象中，可以完成更多的响应的行为(如：增加cookies，...)
+
+		在Flask中，使用 make_response() 构建响应对象
+		from flask import make_response
+		@app.route('/xxx')
+		def xxx():
+			resp = make_response('响应内容')
+			# 允许实现其他的响应行为
+			
+			return resp
+
+	3.重定向
+		1.什么是重定向
+			由服务器端通知客户端重新向一个新的地址发送请求
+		2.语法
+			from flask import redirect
+
+			return redirect('重定向地址')
+
+			===============================
+
+			resp = redirect('重定向地址')
+			#借助resp实现其他的响应行为
+			return resp
+2.文件上传
+	1.注意问题
+		表单中如果有文件上传的话，必须遵循以下两个要求
+		1.提交方式 method 必须为 post
+		2.表单的 enctype 属性的值 必须为 multipart/form-data
+	2.服务器端
+		1.通过 request.files 获取上传文件
+			f = request.files['文件框的name值']
+		2.通过 f.save(保存路径) 将文件保存至指定目录处
+			通过 f.filename 获取文件的名称
+			f.save('static/'+f.filename)
+3.模型 - Models
+	1.什么是模型
+		模型，是根据数据库中表的结构而创建出来的class。
+		每一张表对应到编程语言中，就是一个class
+		表中的每一个列对应到编程语言中就class中的一个属性
+	2.模型的框架 - ORM
+		1.什么是ORM
+			ORM ：Object Relational Mapping
+			简称： ORM，O/RM ，O/R Mapping
+			中文名：对象关系映射
+		2.ORM的三大特征
+			1.数据表(table)到编程类(class)的映射
+				数据库中的每一张表 对应到 编程语言中 都有一个类
+				在ORM中：
+					允许将数据表 自动 生成一个类
+					允许将类 自动 生成一张数据表
+			2.数据类型的映射
+				将数据库表中的字段以及数据类型 对应到 编程语言中类的属性
+				在ORM中
+					允许将表中的字段和数据类型自动映射到编程语言中
+					也允许将类中的属性和数据类型也自动映射到表中
+			3.关系映射
+				将数据库中表与表之间的关系 对应 到编程语言中类与类之间的关系
+				数据库中表与表之间的关系：
+					1.一对一
+						外键，主键，唯一约束
+						A表中的一条数据只能与B表中的一条数据相关联
+					2.一对多
+						外键，主键
+						A表中的一条数据可以与B表中的任意多条数据相关联，反之，B表中的一条数据只能与A表中一条数据相关联
+						ex:老师(Teacher)与课程(Course)
+							一门课程可以被多个老师所教授
+							一个老师最多只能教一门课程
+					3.多对多
+						通过第三张关联表去关联两张表
+						A表中的一条数据可以与B表中的任意多条数据相关联，B表中的一条数据也可以与A表中的任意多条数据相关联
+		3.ORM优点
+			1.封装了数据库中所有的操作，大大提高了开发效率
+			2.可以省略庞大的数据访问层，即便不用SQL编码也能完成对数据的CRUD的操作
+	3.Flask 中的 ORM框架
+		1.数据库 和 框架配置
+			在Python 和 Flask 中，使用的ORM框架是 - SQLAlchemy
+			在Flask 中想使用 SQLAlchemy的话，需要进行安装：
+				pip3 install sqlalchemy
+				pip3 install flask-sqlalchemy
+		2.创建数据库
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Student (id,stu_name)
+Course (id,course_name)
+Student_Course (id,student_id,course_id)
+
+select s.stu_name,c.course_name from Student as s 
+inner join Student_Course as sc
+on s.id = sc.student_id
+inner join Course as c
+on sc.course_id = c.id
+where s.stu_name='马晕'
+
+
+
+
+
+消息头：
+	Content-Type
+	Referer
+
+
+@app.route('/show/<name>')
+def show(name):
+	name : 参数
+
+http://localhost:5000/show/wangwc
